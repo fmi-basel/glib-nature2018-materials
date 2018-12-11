@@ -41,7 +41,31 @@ def _parse_from_filename(filename):
     return parsed
 
 
-def collect_from(img_dir, segm_dir=None, parser_fn=None):
+def _split_mask_and_stack(stack):
+    '''splits mask from image stack for crops that were saved
+    with the old preprocessing.
+
+    Parameters
+    ----------
+    stack : array-like, shape=(ZCYX)
+        image and mask stack combined. The mask is expected
+        to be in channel 2 and invariant along Z.
+
+    Returns
+    -------
+    mask : array-like, shape=(ZYX)
+        mask of the crop.
+    stack : array-like, shape=(ZYX)
+        image stack.
+
+    '''
+    assert stack.shape[1] == 2
+    assert stack.ndim == 4
+    mask = stack[0, 1, ...]
+    return mask, stack[:, 0, ...]
+
+
+def collect_from(img_dir, segm_dir=None, parser_fn=None, pattern=None):
     '''collects all paths from a given directory that match the provided pattern.
 
     Parameters
@@ -62,9 +86,12 @@ def collect_from(img_dir, segm_dir=None, parser_fn=None):
     if parser_fn is None:
         parser_fn = _parse_from_filename
 
+    if pattern is None:
+        pattern = ['*C04.tif', '*mask.tif']
+
     paths = []
-    for pattern in ['*C04.tif', '*mask.tif']:
-        paths.extend(sorted(glob(os.path.join(img_dir, pattern))))
+    for pt in pattern:
+        paths.extend(sorted(glob(os.path.join(img_dir, pt))))
 
     if segm_dir is None:
 
@@ -86,6 +113,19 @@ def collect_from(img_dir, segm_dir=None, parser_fn=None):
         'segm_path': _find_segm(path),
         **parser_fn(os.path.basename(path))
     } for path in paths])
+
+
+def read_channel(paths, source_dir):
+    '''reads stack based on matching file names.
+
+    Notes
+    -----
+    paths are expected to be sorted w.r.t. Z-axis.
+
+    '''
+    channel_stack = [imread(os.path.join(source_dir, os.path.basename(path)))
+                     for path in paths]
+    return np.asarray(channel_stack).squeeze()
 
 
 class StackGenerator(object):
@@ -121,10 +161,13 @@ class StackGenerator(object):
         self.groupby = groupby
 
     def __len__(self):
+        '''
+        '''
         return len(self.df.groupby(self.groupby))
 
     def __iter__(self):
-
+        '''
+        '''
         IMG_KEY = 'img_path'
         SEGM_KEY = 'segm_path'
 
@@ -150,7 +193,24 @@ class StackGenerator(object):
 
                 stack['image_stack'] = _read_stack(vals[False], IMG_KEY)
 
-                stack['mask'] = _read_stack(vals[True], IMG_KEY)
+                try:
+                    stack['mask'] = _read_stack(vals[True], IMG_KEY)
+                except KeyError as err:
+                    if stack['image_stack'].shape[1] == 2 and \
+                       stack['image_stack'].ndim == 4:
+
+                        stack['mask'], stack[
+                            'image_stack'] = _split_mask_and_stack(
+                                stack['image_stack'])
+                    else:
+                        raise RuntimeError(
+                            'Could not find mask for {}'.format(group_key))
+
+                # make sure mask is binary
+                stack['mask'] = stack['mask'] >= 1
+
+                # and check for matching shape of mask and image stack.
+                assert stack['mask'].shape == stack['image_stack'].shape[1:]
 
                 if self.with_segm:
                     stack['segm_stack'] = _read_stack(vals[False], SEGM_KEY)
@@ -162,7 +222,5 @@ class StackGenerator(object):
                         group_key))
                 logging.getLogger(__name__).error('Error message: ' + str(err))
                 continue
-
-            assert stack['mask'].shape == stack['image_stack'].shape[1:]
 
             yield stack
