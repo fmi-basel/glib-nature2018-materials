@@ -33,6 +33,9 @@ var/
 # Matlab
 *.m~
 
+# Emacs
+*.*~
+
 # OS Generated Files
 .DS_Store
 .DS_Store?
