@@ -1,2 +1,3 @@
-from image_processing.workflows.workflows import OrganoidMipProcessingWorkflow, OrganoidSinglePlaneProcessingWorkflow
-
+from image_processing.workflows.workflows import OrganoidMipProcessingWorkflow
+from image_processing.workflows.workflows import OrganoidSinglePlaneProcessingWorkflow
+from image_processing.workflows.org_single_cell_workflow import OrganoidSingleCellProcessingWorkflow
