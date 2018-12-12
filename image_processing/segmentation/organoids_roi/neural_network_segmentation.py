@@ -103,10 +103,11 @@ class BaseNeuralNetworkRoiSegmentation():
     def load_model(self):
         '''
         '''
-        logging.info('Loading model from %s ...', self.model_path)
+        logging.getLogger(__name__).info('Loading model from %s ...',
+                                         self.model_path)
         self.model = load_model(self.model_path)
         self.is_multislice = is_multislice_model(self.model)
-        logging.info('Loading successful.')
+        logging.getLogger(__name__).info('Loading successful.')
 
     def segment(self, stack_dir, out_dir):
         '''applies the segmentation model to the given stack_dir and
