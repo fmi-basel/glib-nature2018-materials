@@ -12,6 +12,7 @@ from image_processing.utils.dataframe_utils import filter_by
 
 from image_processing.segmentation.organoids_roi.neural_network_segmentation import NeuralNetworkSegmentationSP
 from image_processing.segmentation.organoids_roi.neural_network_segmentation import NeuralNetworkSegmentationSC
+from image_processing.segmentation.organoids_roi.nucleus_and_cytosol_segmentation import NucleusAndCytosolWatershed
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -104,3 +105,14 @@ class OrganoidRoiSingleCellSegmentationTask(_BaseRoiSegmentationTask):
     '''
 
     segmentation_method = NeuralNetworkSegmentationSC
+
+
+class OrganoidNucleusAndCytosolMaskGenerationTask(_BaseRoiSegmentationTask):
+    '''Task to run segmentation on individual planes of a z-stack for the
+    provided plates with provides method in segmentation_parameters.
+
+    NOTE Segmentation only possible if crop/roi folder exists.
+
+    '''
+
+    segmentation_method = NucleusAndCytosolWatershed

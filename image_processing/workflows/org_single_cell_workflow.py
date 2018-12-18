@@ -1,4 +1,5 @@
 from image_processing.workflows.tasks.organoid_roi_segmentation_task import OrganoidRoiSingleCellSegmentationTask
+from image_processing.workflows.tasks.organoid_roi_segmentation_task import OrganoidNucleusAndCytosolMaskGenerationTask
 
 
 class OrganoidSingleCellProcessingWorkflow():
@@ -13,6 +14,8 @@ class OrganoidSingleCellProcessingWorkflow():
         OrganoidRoiSingleCellSegmentationTask().run()
 
         ### (2) Combine single cell mask with organoid mask to generate nuclei/cytosol masks.
+        # TODO consider check for existing organoid segmentation
+        OrganoidNucleusAndCytosolMaskGenerationTask().run()
 
-        # ### (2) Extract Features
+        # ### (3) Extract Features
         # TODO OrganoidSingleCellFeatureExtractionTask().run()

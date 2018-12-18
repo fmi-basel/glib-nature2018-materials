@@ -136,7 +136,7 @@ class BaseNeuralNetworkRoiSegmentation():
             segm_dir=None,
             pattern=[self.input_channel_pattern, '*mask.tif'])
 
-        for stack in tqdm(generator, leave=False, desc='Processing well'):
+        for stack in tqdm(generator, leave=True, desc='Processing well', ncols=80):
             stack['image_stack'] = standardize(stack['image_stack'], 50)
             yield stack
 
