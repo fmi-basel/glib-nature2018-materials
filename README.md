@@ -41,24 +41,33 @@ pip install .[cpu]
 
 ## Usage
 
+The following examples assume you are currently in the root directory
+of ```glib-nature2018-materials```. If you installed the package in a
+virtual environment, make sure to activate it, e.g. with ```conda
+activate glib-nature2018```.
+
 The three workflows can be called as follows.
 
 
 Generate organoid segmentations from the overview MIP:
+
 ```
 python run_organoid_mip_segmentation.py
 ```
 
 
 Segment organoids in cropped 3D stacks and extract their features:
+
 ```
-python run_organoid_single_cell_segmentation.py
+python run_organoid_single_plane_segmentation.py
 ```
 
 
 Segment nuclei in cropped 3D stacks, extract features and estimate the cell count per organoid:
+
 ```
-run_organoid_single_plane_segmentation.py
+python run_organoid_single_cell_segmentation.py
 ```
 
+Note that this script expects that ```run_organoid_single_plane_segmentation.py``` was previously executed.
 
