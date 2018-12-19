@@ -80,6 +80,9 @@ class BaseRoiFeatureExtractionTask(Task):
                     logging.getLogger(__name__).warning(
                         'Could not find prediction folder for %s', crop_path)
 
+            if len(pred_paths) <= 0:  # nothing to do.
+                return
+
             if len(pred_paths) < self.nr_of_cores:
                 nr_of_cores = len(pred_paths)
             else:
