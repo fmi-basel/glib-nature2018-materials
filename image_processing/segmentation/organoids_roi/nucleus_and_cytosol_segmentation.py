@@ -7,7 +7,7 @@ from tqdm import tqdm
 from skimage.external.tifffile import imread, imsave
 from skimage.segmentation import watershed
 
-from dlutils.postprocessing.watershed import segment_nuclei
+from image_processing.dlutils.postprocessing.watershed import segment_nuclei
 from image_processing.reader.stackreader import StackGenerator
 
 

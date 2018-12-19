@@ -8,9 +8,9 @@ from skimage.external.tifffile import imsave
 
 import numpy as np
 
-from dlutils.preprocessing.normalization import standardize
-from dlutils.prediction import predict_complete
-from dlutils.models import load_model
+from image_processing.dlutils.preprocessing.normalization import standardize
+from image_processing.dlutils.prediction import predict_complete
+from image_processing.dlutils.models import load_model
 
 from image_processing.reader.stackreader import StackGenerator
 

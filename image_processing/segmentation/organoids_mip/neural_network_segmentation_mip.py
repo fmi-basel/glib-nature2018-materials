@@ -5,9 +5,9 @@ from tqdm import tqdm
 
 from skimage.transform import resize
 
-from dlutils.models import load_model
-from dlutils.prediction import predict_complete
-from dlutils.postprocessing.watershed import segment_nuclei
+from image_processing.dlutils.models import load_model
+from image_processing.dlutils.prediction import predict_complete
+from image_processing.dlutils.postprocessing.watershed import segment_nuclei
 
 from image_processing.segmentation.organoids_mip.segmentation import Segmentation
 from image_processing.segmentation.organoids_mip.utils.imaging import close_segments
