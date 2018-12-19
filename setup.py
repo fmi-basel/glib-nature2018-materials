@@ -25,7 +25,6 @@ setup(
         'opencv-python>=3.4',
         'future',
         'Pillow',
-        'imghdr',
         # TODO Check versions with Urs on Lab machine.
         # TODO Is there something unnecessary?
         # TODO make dlutils a package and dependency or freeze the code and add as third party?
