@@ -21,14 +21,13 @@ setup(
         'statsmodels',
         'mahotas',
         'tqdm',
-        'scikit-image >= 0.13.1',
+        'scikit-image>=0.13.1',
         'opencv-python>=3.4',
         'future',
         'Pillow',
+        'keras==2.0.8',
         # TODO Check versions with Urs on Lab machine.
         # TODO Is there something unnecessary?
-        # TODO make dlutils a package and dependency or freeze the code and add as third party?
-        #      if yes, we will need to add keras as extra dependency.
     ],
     extras_require={
         'gpu': ['tensorflow-gpu'],
