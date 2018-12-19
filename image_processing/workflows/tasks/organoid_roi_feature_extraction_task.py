@@ -77,7 +77,7 @@ class BaseRoiFeatureExtractionTask(Task):
                 if os.path.exists(pred_path):
                     pred_paths.append(pred_path)
                 else:
-                    logging.getLogger(__name__).warn(
+                    logging.getLogger(__name__).warning(
                         'Could not find prediction folder for %s', crop_path)
 
             if len(pred_paths) < self.nr_of_cores:

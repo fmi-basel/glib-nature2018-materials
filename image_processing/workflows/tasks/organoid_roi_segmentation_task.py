@@ -25,7 +25,6 @@ class _BaseRoiSegmentationTask(Task):
 
     '''
 
-    # TODO consider using abc to force self.segmentation_method to exist.
     @property
     @abc.abstractmethod
     def segmentation_method(self):

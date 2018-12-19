@@ -66,6 +66,7 @@ class NucleusAndCytosolWatershed(object):
             segm_dir=pred_dir,
             pattern=[self.input_channel_pattern['CellTrace'], '*mask.tif'])
 
+        # TODO consider checking if/which segmentations are existing.
         assert len(generator_a) == len(generator_b)
 
         for stack_cp, stack_org in tqdm(
