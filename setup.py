@@ -14,23 +14,21 @@ setup(
     " Self-organization and symmetry breaking in intestinal organoid development"''',
     long_description=open('README.md').read(),
     install_requires=[
-        'numpy',
-        'scipy',
-        'pandas',
-        'six',
-        'statsmodels',
-        'mahotas',
-        'tqdm',
-        'scikit-image>=0.13.1',
+        'numpy==1.14.5',
+        'scipy==1.1.0',
+        'pandas==0.23',
+        'six==1.11',
+        'statsmodels==0.9',
+        'mahotas==1.4',
+        'tqdm==4.26',
+        'scikit-image==0.14.1',
         'opencv-python>=3.4',
-        'future',
-        'Pillow',
+        'future==0.16',
+        'Pillow==5.2',
         'keras==2.0.8',
-        # TODO Check versions with Urs on Lab machine.
-        # TODO Is there something unnecessary?
     ],
     extras_require={
-        'gpu': ['tensorflow-gpu'],
-        'cpu': ['tensorflow']
+        'gpu': ['tensorflow-gpu==1.10'],
+        'cpu': ['tensorflow==1.10']
     },
 )
