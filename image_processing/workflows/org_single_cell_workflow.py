@@ -1,5 +1,7 @@
 from image_processing.workflows.tasks.organoid_roi_segmentation_task import OrganoidRoiSingleCellSegmentationTask
 from image_processing.workflows.tasks.organoid_roi_segmentation_task import OrganoidNucleusAndCytosolMaskGenerationTask
+from image_processing.workflows.tasks.organoid_roi_feature_extraction_task import OrganoidCellCountEstimatorTask
+from image_processing.workflows.tasks.organoid_roi_feature_extraction_task import OrganoidSingleCellFeatureExtractionTask
 
 
 class OrganoidSingleCellProcessingWorkflow():
@@ -18,4 +20,5 @@ class OrganoidSingleCellProcessingWorkflow():
         OrganoidNucleusAndCytosolMaskGenerationTask().run()
 
         # ### (3) Extract Features
-        # TODO OrganoidSingleCellFeatureExtractionTask().run()
+        OrganoidSingleCellFeatureExtractionTask().run()
+        OrganoidCellCountEstimatorTask().run()
