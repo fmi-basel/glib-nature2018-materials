@@ -4,7 +4,7 @@ Image Processing Package for the Paper "Self-organization and symmetry breaking 
 
 ## Prerequisites
 
-On Ubuntu, make sure Python 3.6 is installed and pip:
+On Ubuntu, make sure Python 3.6 and is installed:
 
 ```
 sudo apt install python3 python3-pip
@@ -15,8 +15,14 @@ If your system python defaults to version 2.7, you will have to use
 the following steps. Alternatively, you can use Anaconda (as detailled
 below) to install and run the code in a separate environment.
 
+In addition, it requires the following libraries:
+```
+sudo apt install -y libsm6 libxext6 libxrender1
+```
 
-On Windows, we recommend using [Anaconda](https://www.anaconda.com/download/#linux).
+On Windows, we recommend installing [Anaconda](https://www.anaconda.com/download/#linux) and creating an environment as detailled in the following paragraph.
+
+### Setting up an Anaconda environment
 
 Use the ```Anaconda prompt``` to create a new environment:
 
@@ -24,11 +30,12 @@ Use the ```Anaconda prompt``` to create a new environment:
 conda create -n glib-nature2018 python=3.6
 ```
 
-and make sure to activate it before running any of the steps below:
+and make sure to activate it before running any of the steps below as follows:
 
 ```
 conda activate glib-nature2018
 ```
+You will notice that ```(glib-nature2018)``` now appears at the beginning of the prompt, indicating that the environment is active.
 
 ## Installation
 
@@ -37,6 +44,12 @@ Change into the code folder and install the package and its dependencies with ``
 ```
 cd glib-nature2018-materials
 pip install .[cpu]
+```
+
+**Remark**: On Windows, the dependency ```mahotas``` needs ```Microsoft Visual C++ 14.0``` to be compiled. As an alternative, it is possible to install mahotas from conda *before* running ```pip install .[cpu]``` with:
+
+```
+conda install mahotas==1.4.5 -c conda-forge
 ```
 
 ## Usage
