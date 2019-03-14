@@ -1,35 +1,16 @@
-![FMI Logo](https://www.fmi.ch/img/logo-FMI-grey.gif "FMI LOGO")
+# Lightsheet Volume Analysis
 
-# Self-organization and symmetry breaking in intestinal organoid development - Materials
+## Requirements
 
-This repository contains three branches with materials of the Paper "Self-organization and symmetry breaking in intestinal organoid development":
- - Image Processing Pipeline for 2D/3D organoid segmentation - time course samples
- - Image Processing Pipeline for 2D/3D organoid segmentation - time lapse samples
- - Organoid linking algorithm
+Matlab (tested with R2017b, R2018a)
 
-Further information are given in the README.md files of the corresponding branches.
+## Usage
 
-## Citation
+- Main function: "VolumeMain"
+- The results are written into an excel file in the specified output folder.
+- For each time a 3D volume rendering figure is also saved in output folder. 
 
-If you decide to use materials from this repository in a published work, please kindly cite us using the following bibliography:
-
-@Article{glaes,
-    AUTHOR = {...},
-    TITLE = {Self-organization and symmetry breaking in intestinal organoid development},
-    JOURNAL = {Nature},
-    VOLUME = {...},
-    YEAR = {...},
-    NUMBER = {...},
-    ARTICLE NUMBER = {...},
-    URL = {...},
-    DOI = {...}
-}
-
-## License
-
-MIT License
-
-Copyright (c) 2019 Urs Mayr (FMI), Markus Rempfler (FMI), Dario Vischi (FMI)
-
-You should have received a copy of the MIT License along with the source code.
-If not, see https://opensource.org/licenses/MIT
+The calculated metrics are
+- Total_Area:	Area of the segmentations Z-projection in um.
+- Total_Volume:	Volume of segmentations in um3.
+- majoraxis: returns the length of a unit vector that points in the direction of the major axis
