@@ -1,1 +1,0 @@
-multislice-rxunet/RxUnet-W0.5-C4-L3-B2-D0.05/adam
