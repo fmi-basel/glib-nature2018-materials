@@ -1,18 +1,15 @@
 ![FMI Logo](https://www.fmi.ch/img/logo-FMI-grey.gif "FMI LOGO")
 
-Self-organization and symmetry breaking in intestinal organoid development - Materials
---------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------
+# Self-organization and symmetry breaking in intestinal organoid development - Materials
 
 This repository contains three branches with materials of the Paper "Self-organization and symmetry breaking in intestinal organoid development":
-- Image Processing Pipeline for 2D/3D organoid segmentation - fixed samples
-- Image Processing Pipeline for 2D/3D organoid segmentation - lightsheet samples
-- Organoid linking algorithm
+ - Image Processing Pipeline for 2D/3D organoid segmentation - time course samples
+ - Image Processing Pipeline for 2D/3D organoid segmentation - time lapse samples
+ - Organoid linking algorithm
 
 Further information are given in the README.md files of the corresponding branches.
 
-Citation
---------------------------------------------------------------------------------------------------------------------------
+## Citation
 
 If you decide to use materials from this repository in a published work, please kindly cite us using the following bibliography:
 
@@ -28,8 +25,7 @@ If you decide to use materials from this repository in a published work, please 
     DOI = {...}
 }
 
-License
---------------------------------------------------------------------------------------------------------------------------
+## License
 
 MIT License
 
