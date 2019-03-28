@@ -18,30 +18,88 @@ class IntensityFeatures(FeatureExtractor):
             global_config = GlobalConfiguration.get_instance()
             self.pixel_size = float(global_config.intensity_default['pixel_size'])
 
-    def _mass_displacement(self, img_crop, bw, pixel_size):
+    def _mass_displacement(self, prop, img_crop):
+        """"
+        The mass displacement is the distance between the center
+        of mass of the binary image and of the intensity image. The
+        center of mass is the average X or Y for the binary image
+        and the sum of X or Y * intensity / integrated intensity.
+        
+        @see
+        https://github.com/CellProfiler/CellProfiler/blob/master/
+            cellprofiler/modules/measureobjectintensity.py
+        @license
+        The BSD 3-Clause License
+        
+        Copyright © 2003 - 2019 Broad Institute, Inc. All rights reserved.
 
-        '''
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
 
-        :param img:
-        :param bw:
-        :return:
-        '''
-        # Only calculate mass displacement within object
-        img = img_crop.copy()
-        img[bw] = 0
+            1.  Redistributions of source code must retain the above copyright notice,
+                this list of conditions and the following disclaimer.
 
-        img = img_crop.copy()
-        bw_x = np.sum(np.multiply(np.array(list(range(1, bw.shape[1] + 1))), np.array(np.sum(bw, axis=0)))) / np.sum(
-            np.array(list(range(1, bw.shape[1] + 1))))
-        bw_y = np.sum(np.multiply(np.array(list(range(1, bw.shape[0] + 1))), np.array(np.sum(bw, axis=1)))) / np.sum(
-            np.array(list(range(1, bw.shape[0] + 1))))
-        img_x = np.sum(np.multiply(np.array(list(range(1, img.shape[1] + 1))), np.array(np.sum(img, axis=0)))) / np.sum(
-            np.array(list(range(1, img.shape[1] + 1))))
-        img_y = np.sum(
-            np.multiply(np.array(list(range(1, img.shape[0] + 1))), np.array(np.sum(img_crop, axis=1)))) / np.sum(
-            np.array(list(range(1, img.shape[0] + 1))))
+            2.  Redistributions in binary form must reproduce the above copyright
+                notice, this list of conditions and the following disclaimer in the
+                documentation and/or other materials provided with the distribution.
 
-        return np.sqrt((bw_x - img_x) ** 2 + (bw_y - img_y) ** 2) * pixel_size
+            3.  Neither the name of the Broad Institute, Inc. nor the names of its
+                contributors may be used to endorse or promote products derived from
+                this software without specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED “AS IS.”  BROAD MAKES NO EXPRESS OR IMPLIED
+        REPRESENTATIONS OR WARRANTIES OF ANY KIND REGARDING THE SOFTWARE AND
+        COPYRIGHT, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE, CONFORMITY WITH ANY DOCUMENTATION,
+        NON-INFRINGEMENT, OR THE ABSENCE OF LATENT OR OTHER DEFECTS, WHETHER OR NOT
+        DISCOVERABLE. IN NO EVENT SHALL BROAD, THE COPYRIGHT HOLDERS, OR CONTRIBUTORS
+        BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+        CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO PROCUREMENT OF SUBSTITUTE
+        GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+        LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+        OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF, HAVE REASON TO KNOW, OR IN
+        FACT SHALL KNOW OF THE POSSIBILITY OF SUCH DAMAGE.
+
+        If, by operation of law or otherwise, any of the aforementioned warranty
+        disclaimers are determined inapplicable, your sole remedy, regardless of the
+        form of action, including, but not limited to, negligence and strict
+        liability, shall be replacement of the software with an updated version if one
+        exists.
+
+        Development of CellProfiler has been funded in whole or in part with federal
+        funds from the National Institutes of Health, the National Science Foundation,
+        and the Human Frontier Science Program.
+        """
+        lmask = prop.image
+
+        # Weight image in [0,1] range
+        img_range = img_as_float(img_crop.copy())
+
+        labels = prop.image.astype(int)
+        lindexes = 1
+        nobjects = 1
+        mesh_y, mesh_x = np.mgrid[ 0:labels.shape[0], 0:labels.shape[1]]
+        mesh_x = mesh_x[lmask]
+        mesh_y = mesh_y[lmask]
+        limg = img_range[lmask]
+        llabels = labels[lmask]
+        cm_x = ndimage.mean(mesh_x, labels=llabels, index=lindexes)
+        cm_y = ndimage.mean(mesh_y, labels=llabels, index=lindexes)
+        i_x = ndimage.sum(mesh_x * limg, llabels, index=lindexes)
+        i_y = ndimage.sum(mesh_y * limg, llabels, index=lindexes)
+        integrated_intensity = ndimage.sum(limg, llabels, lindexes)
+
+        cmi_x = np.zeros((nobjects,))
+        cmi_y = np.zeros((nobjects,))
+
+        cmi_x[lindexes - 1] = i_x / integrated_intensity
+        cmi_y[lindexes - 1] = i_y / integrated_intensity
+
+        diff_x = cm_x - cmi_x[lindexes - 1]
+        diff_y = cm_y - cmi_y[lindexes - 1]
+
+        return np.sqrt(diff_x * diff_x + diff_y * diff_y)
 
     def extract_features(self, image_df, feature_df, regionprops):
 
@@ -71,39 +129,7 @@ class IntensityFeatures(FeatureExtractor):
                 img_crop = np.asarray(img.crop([min_col, min_row, max_col, max_row]))
                 object_filled = img_crop[prop.image]
 
-                # The mass displacement is the distance between the center
-                # of mass of the binary image and of the intensity image. The
-                # center of mass is the average X or Y for the binary image
-                # and the sum of X or Y * intensity / integrated intensity
-                lmask = prop.image
-
-                # Weight image in [0,1] range
-                img_range = img_as_float(img_crop.copy())
-
-                labels = prop.image.astype(int)
-                lindexes = 1
-                nobjects = 1
-                mesh_y, mesh_x = np.mgrid[ 0:labels.shape[0], 0:labels.shape[1]]
-                mesh_x = mesh_x[lmask]
-                mesh_y = mesh_y[lmask]
-                limg = img_range[lmask]
-                llabels = labels[lmask]
-                cm_x = ndimage.mean(mesh_x, labels=llabels, index=lindexes)
-                cm_y = ndimage.mean(mesh_y, labels=llabels, index=lindexes)
-                i_x = ndimage.sum(mesh_x * limg, llabels, index=lindexes)
-                i_y = ndimage.sum(mesh_y * limg, llabels, index=lindexes)
-                integrated_intensity = ndimage.sum(limg, llabels, lindexes)
-
-                cmi_x = np.zeros((nobjects,))
-                cmi_y = np.zeros((nobjects,))
-
-                cmi_x[lindexes - 1] = i_x / integrated_intensity
-                cmi_y[lindexes - 1] = i_y / integrated_intensity
-
-                diff_x = cm_x - cmi_x[lindexes - 1]
-                diff_y = cm_y - cmi_y[lindexes - 1]
-
-                mass_displacement = np.sqrt(diff_x * diff_x + diff_y * diff_y)
+                mass_displacement = self._mass_displacement(prop, img_crop)
 
                 #
                 # Calculate standard features and collect
