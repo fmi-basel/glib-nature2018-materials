@@ -2,9 +2,9 @@
 
 Organizer for indexing and processing microscope experiments.
 
-The application allows the indexing of image and meta data from microscope experiments within an Sqlite database. Hereby, images and annotations are stored within a spatial index which allows a fast access and spatial operations.
+The application allows the indexing of image and meta data from microscope experiments within an Sqlite database. Hereby, images and annotations are stored within a spatial index that allows a fast access and spatial operations.
 
-After indexing an experiment it is possible to apply user-defined workflows for data processing and analysing. Two pre-defined workflows are available for linking organoids over acquisition rounds or cells over z-planes.
+After indexing an experiment, it is possible to apply user-defined workflows for data processing and analysing. Two pre-defined workflows are available for linking organoids over acquisition rounds or cells over z-planes.
 
 ## Requirements
 
@@ -16,7 +16,7 @@ Under Windows and Linux you can install the Python package using pip:
 
     pip install https://github.com/fmi-basel/glib-nature2018-materials/archive/organoid_linking_algorithm.zip
 
-Hereby, the pre-build sqlite extension mod_spatialite-4.3.0a will be installed automatically.
+Hereby, the pre-build Sqlite extension mod_spatialite-4.3.0a will be installed automatically.
 If you need a newer version of mod_spatialite or the pre-build binaries do not work on your system please refer to https://www.gaia-gis.it/gaia-sins/ for further information.
 
 ## Usage
