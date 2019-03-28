@@ -174,6 +174,7 @@ class FindOverlappingRoundSegmentationsTask(Task):
             # initialize temporary table
             # @see https://stackoverflow.com/questions/44140632/
             #          use-temp-table-with-sqlalchemy
+            # posted by: van (https://stackoverflow.com/users/99594/van)
             temp_round_shifts_table = [
                 select([
                     cast(literal(int(round_id)), sqlalchemy.Integer).label(
