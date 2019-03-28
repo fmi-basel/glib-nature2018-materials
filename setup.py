@@ -32,18 +32,11 @@ setup(
     package_data={
         'experiment_organizer': ["%s/*" % mod_spatialite_dir or '.']
     },
-    # install files which are outside the package data.
-    # files are not installed with the package but system-wide,
-    # e.g. configurations or libraries
-    # data_files=[
-    #    ('config', ['cfg/data.cfg']), ('/etc/init.d', ['init-script'])
-    # ]
     data_files=[],
     description='Organizer for experiments of the Liberali group at the FMI.',
     long_description=open('README.md').read(),
-    # scripts=['bin/script.py'],
-    # url='http://pypi.python.org/pypi/experiment-organizer/',
-    # license='LICENSE.txt',
+    url='https://github.com/fmi-basel/glib-nature2018-materials/tree/organoid_linking_algorithm',
+    license='LICENSE.txt',
     dependency_links=[
         'https://github.com/geoalchemy/geoalchemy2/tarball/0.5.0'
     ],
