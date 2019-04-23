@@ -17,6 +17,13 @@ OUTSIDE = 0
 
 class IntensityFeatureSuperpixel(FeatureExtractor):
 
+    '''
+
+	    Class to segment organoids on MIPs into superpixel with the slic method and calculated mean over the k-top superpixels
+
+     '''
+
+
     def __init__(self, superpixel_default=None):
 
         if superpixel_default is None:
@@ -84,7 +91,7 @@ class IntensityFeatureSuperpixel(FeatureExtractor):
                         means = scipy.ndimage.mean(img_crop, spx, index=index)
                         means_sorted = np.sort(means)[::-1]
                         if nr_superpixel >= self.number_superpixel:
-                            pixel_mean = np.mean(means_sorted[:self.number_superpixel+1])
+                            pixel_mean = np.mean(means_sorted[:self.number_superpixel])
                         else:
                             pixel_mean = np.mean(means_sorted)
 

@@ -6,7 +6,7 @@ from image_processing.utils.global_configuration import GlobalConfiguration
 
 class ShapeDescriptor(FeatureExtractor):
     '''
-    Class to extract features for single input plane (stitched MIP tiff)
+    Class to calculate morphological features of organoids on MIPs
     '''
 
     def __init__(self):

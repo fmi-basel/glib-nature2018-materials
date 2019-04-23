@@ -11,6 +11,11 @@ from image_processing.feature_extractor.extractor import FeatureExtractor
 
 class IntensityFeatures(FeatureExtractor):
 
+    '''
+    Class to calculate intensity features for organoids on MIPs
+
+    '''
+
     def __init__(self, pixel_size = None):
         if pixel_size is not None:
             self.pixel_size = pixel_size
